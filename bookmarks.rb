@@ -21,13 +21,13 @@ use Rack::Session::Pool, :expire_after => 2592000
   post '/' do
     session[:name] = params[:name]
     session[:email] = params[:email]
-    session[:password] = encrypt(params[:password])
     user = User.create(
       :name => session[:name],
       :email => session[:email],
-      :password => session[:password]
+      :password => params[:password],
+      :password_confirmation => params[:confirm_password]
     )
-    redirect '/links'
+    redirect('/links')
   end
 
   get '/links' do
