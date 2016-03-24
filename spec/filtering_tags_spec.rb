@@ -3,7 +3,7 @@ feature 'filtering tags' do
 
     create_makers_link
 
-    visit('/')
+    visit('/links')
     click_button('New Link')
     fill_in :title, with: 'Makers Bubbles'
     fill_in :url, with: 'http://www.makersacademy.co.uk'

@@ -8,7 +8,7 @@ feature 'adding tags' do
   end
 
   scenario 'when we creating new links with multiple tags'do
-    visit('/')
+    visit('/links')
     click_button('New Link')
     fill_in :title, with: 'Makers Academy'
     fill_in :url, with: 'http://www.makersacademy.co.uk'

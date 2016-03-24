@@ -10,8 +10,18 @@ enable :sessions
 # get '/' do
 #   redirect '/links/index'
 # end
-
 get '/' do
+  erb :home
+end
+
+post '/' do
+  user = User.create(
+    :email => params[:email],
+    :password => params[:password]
+  )
+end
+
+get '/links' do
   @links = Link.all
   erb :'links/index'
 end
@@ -30,7 +40,7 @@ post '/links/newlink' do
     link.tags << tag
   end
   link.save
-  redirect('/')
+  redirect('/links')
 end
 
 get '/tags/:name' do

@@ -10,6 +10,7 @@ require './bookmarks'
 require 'rspec'
 require './models/link'
 require 'web_helpers'
+require './models/user'
 
 # require 'selenium-webdriver'
 
