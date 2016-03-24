@@ -12,6 +12,7 @@ def sign_up_bob
   fill_in :name, with: 'Bob'
   fill_in :email, with: 'bob@bob.com'
   fill_in :password, with: 'password1'
+  fill_in :confirm_password, with: 'password1'
 end
 
 def sign_up_tom
@@ -19,4 +20,5 @@ def sign_up_tom
   fill_in :name, with: 'Tom'
   fill_in :email, with: 'tom@tom.com'
   fill_in :password, with: 'password2'
+  fill_in :confirm_password, with: 'password2'
 end

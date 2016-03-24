@@ -29,4 +29,16 @@ feature 'after signing up' do
     click_button('New User')
     expect(page).not_to have_content('Tom')
   end
+  
+  scenario 'will raise error if no email address' do
+    visit('/')
+    fill_in('name', :with => 'bob')
+    fill_in('password', :with => 'bob')
+    fill_in('confirm_password', :with => 'bob')
+    click_button('New User')
+    expect(page).to have_content "No email provided"
+  end
+
 end
+
+

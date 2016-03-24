@@ -21,7 +21,6 @@ register Sinatra::Flash
   end
 
   post '/' do
-    User.all ? user_count = User.all.count : user_count = 0
     session[:name] = params[:name]
     session[:email] = params[:email]
     user = User.create(
