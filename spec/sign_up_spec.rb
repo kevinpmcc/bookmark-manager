@@ -22,14 +22,14 @@ feature 'after signing up' do
     click_button('New User')
     expect(User.last.email).to eq('tom@tom.com')
   end
-  
+
   scenario 'will raise error if passwords do not match' do
     sign_up_tom
-    fill_in('confirm_password', :with => 'wrongpassword')     
+    fill_in('confirm_password', :with => 'wrongpassword')
     click_button('New User')
     expect(page).not_to have_content('Tom')
   end
-  
+
   scenario 'will raise error if no email address' do
     visit('/')
     fill_in('name', :with => 'bob')
@@ -38,7 +38,4 @@ feature 'after signing up' do
     click_button('New User')
     page.has_xpath?('/')
   end
-
 end
-
-
