@@ -2,6 +2,7 @@ ENV["RACK_ENV"] ||= "development"
 require_relative 'models/link'
 require 'sinatra/base'
 require_relative 'data_mapper_setup'
+require_relative 'models/password_encryption'
 
 class Bookmarks < Sinatra::Base
 
@@ -15,12 +16,15 @@ get '/' do
 end
 
 post '/' do
+  my_password = BCrypt::Password.create(params[:password])
+
   user = User.create(
     :name => params[:name],
     :email => params[:email],
-    :password => params[:password]
+    :password => my_password
   )
   user.save
+  p user
   redirect '/links'
 end
 
