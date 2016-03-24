@@ -3,10 +3,12 @@ require_relative 'models/link'
 require 'sinatra/base'
 require_relative 'data_mapper_setup'
 require_relative 'models/password_encryption'
+require 'sinatra/flash'
 
 class Bookmarks < Sinatra::Base
 
 use Rack::Session::Pool, :expire_after => 2592000
+register Sinatra::Flash
 
   helpers do
     def encrypt(password)
@@ -19,6 +21,7 @@ use Rack::Session::Pool, :expire_after => 2592000
   end
 
   post '/' do
+    User.all ? user_count = User.all.count : user_count = 0
     session[:name] = params[:name]
     session[:email] = params[:email]
     user = User.create(
@@ -27,7 +30,12 @@ use Rack::Session::Pool, :expire_after => 2592000
       :password => params[:password],
       :password_confirmation => params[:confirm_password]
     )
-    redirect('/links')
+    if user.save
+      redirect('/links')
+    else
+      flash[:message] = 'Password and confirmation password do not match'
+      redirect('/')
+    end
   end
 
   get '/links' do

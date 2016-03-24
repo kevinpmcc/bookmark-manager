@@ -12,3 +12,4 @@ gem "rspec-sinatra"
 gem "dm-transactions"
 gem "database_cleaner"
 gem "bcrypt"
+gem 'sinatra-flash'

@@ -1,5 +1,8 @@
 <h1> Sign Up! </h1>
-<%=@password_error %>
+
+<% if flash[:message] %>
+  <div id='notice'><%= flash[:message] %></div>
+<% end %>
 
 <form action ='/' method='post'>
   <input name='name' type='text' placeholder='name'>
