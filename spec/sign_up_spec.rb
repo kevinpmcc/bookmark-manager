@@ -36,7 +36,7 @@ feature 'after signing up' do
     fill_in('password', :with => 'bob')
     fill_in('confirm_password', :with => 'bob')
     click_button('New User')
-    expect(page).to have_content "No email provided"
+    page.has_xpath?('/')
   end
 
 end
