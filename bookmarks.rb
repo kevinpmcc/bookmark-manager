@@ -16,12 +16,16 @@ end
 
 post '/' do
   user = User.create(
+    :name => params[:name],
     :email => params[:email],
     :password => params[:password]
   )
+  user.save
+  redirect '/links'
 end
 
 get '/links' do
+  !!User.last ? @name = User.first.name : @name = 'Guest'
   @links = Link.all
   erb :'links/index'
 end

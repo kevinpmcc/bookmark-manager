@@ -1,16 +1,25 @@
 feature 'after signing up' do
 
-  before do
-    sign_up
-  end
-   
-  scenario 'the User count increases by 1' do      
+  scenario 'the User count increases by 1' do
+    sign_up_bob
     expect{ click_button('New User') }.to change{ User.all.count }.by(1)
   end
 
   scenario 'page displays a welcome message' do
+    sign_up_bob
+    click_button('New User')
+    expect(page).to have_content('Welcome Bob!')
+  end
+
+  scenario 'page displays a welcome message specific to a user' do
+    sign_up_tom
+    click_button('New User')
+    expect(page).to have_content('Welcome Tom!')
   end
 
   scenario 'email address is saved in database' do
+    sign_up_tom
+    click_button('New User')
+    expect(User.last.email).to eq('tom@tom.com')
   end
 end

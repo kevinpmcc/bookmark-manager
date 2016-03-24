@@ -1,3 +1,5 @@
+<h1> Welcome <%= @name %>!</h1>
+
 <h1> Links</h1>
 <ul id='links'>
   <% @links.each do |link| %>
@@ -12,4 +14,3 @@
 <form action='/links/new'>
 <button type='submit' name='New Link'>New Link</button>
 </form>
-
