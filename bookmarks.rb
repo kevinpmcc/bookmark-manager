@@ -7,10 +7,15 @@ require 'sinatra/flash'
 
 class Bookmarks < Sinatra::Base
 
-use Rack::Session::Pool, :expire_after => 2592000
 register Sinatra::Flash
 
+enable :sessions
+set :session_secret, 'super secret'
   helpers do
+    def current_user
+      @current_user ||= User.get(session[:user_id])
+    end
+
     def encrypt(password)
       BCrypt::Password.create(password)
     end
@@ -21,33 +26,39 @@ register Sinatra::Flash
   end
 
   post '/' do
-    session[:name] = params[:name]
-    session[:email] = params[:email]
-    user = User.create(
-      :name => session[:name],
-      :email => session[:email],
+    @user = User.create(
+      :name => params[:name],
+      :email => params[:email],
       :password => params[:password],
       :password_confirmation => params[:confirm_password]
     )
-    if user.save
+    if @user.save
+      session[:user_id] = @user.id
       redirect('/links')
+    else 
+      flash.now[:errors] = @user.errors.full_messages 
+      erb(:home)
+    end
+  end
+
+  post '/login' do
+    user = User.authenticate(params[:email], params[:password])
+    if user
+      session[:user_id] = user.id
+      redirect '/links'
     else
-      flash[:message] = 'Password and confirmation password do not match'
-      redirect('/')
+     flash.now[:errors] = ['The email or password is incorrect']
+    redirect '/' 
     end
   end
 
   get '/links' do
-    !!User.last ? @name = User.last.name : @name = 'Guest'
     @links = Link.all
     erb :'links/index'
   end
 
-  get '/links/new' do
-    erb :'links/new'
-  end
 
-  post '/links/newlink' do
+  post '/links' do
     link = Link.create(
     :title => params[:title],
     :url => params[:url]
@@ -60,11 +71,15 @@ register Sinatra::Flash
     redirect('/links')
   end
 
+  get '/links/new' do
+    erb :'links/new'
+  end
+ 
   get '/tags/:name' do
     tag = Tag.first(name: params[:name])
     @links = tag ? tag.links : []
     erb :'links/index'
-    end
+  end
 
   run! if app_file ==$0
 end

@@ -1,7 +1,21 @@
+<h2> Login </h2>
+
+<form action ='/login' method='post'>
+  <input name='login_email' type='text' placeholder='login_email'>
+  <input name='login_password' type='text' placeholder='login_password'>
+  <br></br>
+  <button type='submit' value='Login'>Login</button>
+</form>
+
 <h1> Sign Up! </h1>
 
-<% if flash[:message] %>
-  <div id='notice'><%= flash[:message] %></div>
+<% if flash[:errors] && !flash[:errors].empty? %>
+  Please refer to the following errors below:
+  <ul id='errors'>
+    <% flash[:errors].each do |error| %>
+      <li><%= error %></li>
+    <% end %>
+  </ul>
 <% end %>
 
 <form action ='/' method='post'>
